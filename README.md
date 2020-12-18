@@ -1,4 +1,4 @@
-# youtube-data
+# youtube-videos
 
 Express middleware that gets the latest 50 videos from a YouTube channel, by it's channel id, on a timed interval (default 1 hour).
 
@@ -13,12 +13,12 @@ Express middleware that gets the latest 50 videos from a YouTube channel, by it'
 ## Usage
 
 ```js
-const YouTubeData = require("./modules/youtube-data/youtube-data");
+const YouTubeVideos = require("./modules/youtube-videos/youtube-videos");
 const express = require("express");
 
 let app = express();
 
-app.use(YouTubeData("ApI-K3y-h3Re", "ChanNe1-1D_h3re"));
+app.use(YouTubeVideos("ApI-K3y-h3Re", "ChanNe1-1D_h3re"));
 
 app.get("*", (req, res) => {
   console.log(req.youtube_videos);

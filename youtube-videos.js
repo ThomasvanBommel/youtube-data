@@ -5,9 +5,9 @@
  */
 const {google} = require("googleapis");
 
-class YouTubeData {
+class YouTubeVideos {
   /**
-   * Create a new YouTubeData object, which grabs the last 50 videos from
+   * Create a new YouTubeVideos object, which grabs the last 50 videos from
    * the provided channel_id every hour and places their information inside the
    * youtube_videos object.
    * @param {string} api_key - YouTube Data API v3 key
@@ -53,7 +53,7 @@ class YouTubeData {
 }
 
 /**
- * Create a new YouTubeData object, which grabs the last 50 videos from
+ * Create a new YouTubeVideos object, which grabs the last 50 videos from
  * the provided channel_id every hour and places their information inside the
  * youtube_videos object.
  * @param {string} api_key - YouTube Data API v3 key
@@ -61,5 +61,5 @@ class YouTubeData {
  * @param {integer} [interval=3600000] - Update interval (default 1h)
  */
 module.exports = (api_key, channel_id, interval=3600000) => {
-  return new YouTubeData(api_key, channel_id, interval=3600000).middleware;
+  return new YouTubeVideos(api_key, channel_id, interval=3600000).middleware;
 };

@@ -6,6 +6,7 @@ Express middleware that gets the latest 50 videos from a YouTube channel, by it'
 
  - NodeJS
  - Express module: `npm install express`
+ - GoogleApis module: `npm install googleapis`
  - YouTube Data API v3 key
  - YouTube channel id
 

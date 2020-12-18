@@ -18,6 +18,11 @@ const express = require("express");
 
 let app = express();
 
+/**
+ * @param {string} api_key - YouTube Data API v3 key
+ * @param {string} channel_id - YouTube channel id
+ * @param {integer} [interval=3600000] - Update interval (default 1h)
+ */
 app.use(YouTubeVideos("ApI-K3y-h3Re", "ChanNe1-1D_h3re"));
 
 app.get("*", (req, res) => {

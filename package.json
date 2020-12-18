@@ -1,6 +1,6 @@
 {
   "name": "youtube-videos",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Express middleware for loading 50 youtube videos every hour",
   "main": "youtube-videos.js",
   "scripts": {
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ThomasvanBommel/youtube-data.git"
+    "url": "git+https://github.com/ThomasvanBommel/youtube-videos.git"
   },
   "author": "Thomas vanBommel",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ThomasvanBommel/youtube-data/issues"
+    "url": "https://github.com/ThomasvanBommel/youtube-videos/issues"
   },
-  "homepage": "https://github.com/ThomasvanBommel/youtube-data#readme"
+  "homepage": "https://github.com/ThomasvanBommel/youtube-videos#readme"
 }

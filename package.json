@@ -1,6 +1,6 @@
 {
   "name": "youtube-videos",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Express middleware for loading 50 youtube videos every hour",
   "main": "youtube-videos.js",
   "scripts": {

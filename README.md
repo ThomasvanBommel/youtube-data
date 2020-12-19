@@ -1,6 +1,6 @@
 # youtube-videos
 
-Express middleware that gets the latest 50 videos from a YouTube channel, by it's channel id, on a timed interval (default 1 hour).
+Express middleware that gets videos from a YouTube channel, by it's channel id, on a timed interval (default 1 hour).
 
 ## Requirements
 
@@ -10,20 +10,34 @@ Express middleware that gets the latest 50 videos from a YouTube channel, by it'
  - YouTube Data API v3 key
  - YouTube channel id
 
+## Options
+```js
+/**
+ * @param {Object} options - YouTubeVideos Options
+ * @param {string} options.api_key - YouTube Data API v3 key
+ * @param {string} options.channel_id - YouTube channel id
+ * @param {integer} [options.interval=3600000] - Update interval (default 1h)
+ * @param {integer} [options.max_results=50] - Maximum result response count,
+ *  Min/Max = 1/50
+ * @param {string} [options.order="date"] - Order of the video results,
+ *  One of ("date", "rating", "relevance", "title", "videoCount", "viewCount")
+ * @throws Missing 'channel_id' from YouTubeVideos options
+ * @throws Missing 'api_key' from YouTubeVideos options
+ */
+```
+
 ## Usage
 
 ```js
-const YouTubeVideos = require("./modules/youtube-videos/youtube-videos");
+const YT = require("youtube-videos");
 const express = require("express");
 
 let app = express();
 
-/**
- * @param {string} api_key - YouTube Data API v3 key
- * @param {string} channel_id - YouTube channel id
- * @param {integer} [interval=3600000] - Update interval (default 1h)
- */
-app.use(YouTubeVideos("ApI-K3y-h3Re", "ChanNe1-1D_h3re"));
+app.use(YT({
+  api_key: "ApI-K3y-h3Re",
+  channel_id: "ChanNe1-1D_h3re"
+}));
 
 app.get("*", (req, res) => {
   console.log(req.youtube_videos);
@@ -32,38 +46,78 @@ app.get("*", (req, res) => {
 
 ### Output Example
 
-```
+```js
 [
   {
     kind: 'youtube#searchResult',
-    etag: '_x80VldOia-cdxSgOi6QxE_cgJI',
-    id: { kind: 'youtube#video', videoId: 'TpczZvlNJUc' },
+    etag: 'kgbqpKXwhOw1oUfkpgVI1gqjVmg',
+    id: { kind: 'youtube#video', videoId: 'xFOonneYxWQ' },
+    statistics: {
+      viewCount: '4',
+      likeCount: '0',
+      dislikeCount: '0',
+      favoriteCount: '0',
+      commentCount: '1'
+    },
     snippet: {
-      publishedAt: '2016-12-17T18:35:43Z',
+      publishedAt: '2020-11-21T20:26:45Z',
       channelId: 'UCbVqDf-obg_ylZZjNp1hK7Q',
-      title: 'UnityTerrain - TimeLapse',
-      description: 'Unity Terrain project I did for a school portfolio.',
+      title: 'Lobbier Project Update (week 1)',
+      description: 'https://github.com/BillMyres/Lobbier.',
       thumbnails: [Object],
       channelTitle: 'Thomas vanBommel',
       liveBroadcastContent: 'none',
-      publishTime: '2016-12-17T18:35:43Z'
+      publishTime: '2020-11-21T20:26:45Z'
     }
   },
   {
     kind: 'youtube#searchResult',
-    etag: 'gqP5kKcAEiL-faKXFNvHTy27qLs',
-    id: { kind: 'youtube#video', videoId: 'mjbRPfr1Vok' },
+    etag: '3e-lsY0z_lP42BjbGO_EtFITcJ0',
+    id: { kind: 'youtube#video', videoId: 'WceNj_73A3o' },
+    statistics: {
+      viewCount: '9',
+      likeCount: '0',
+      dislikeCount: '0',
+      favoriteCount: '0',
+      commentCount: '0'
+    },
     snippet: {
-      publishedAt: '2017-01-21T05:14:23Z',
+      publishedAt: '2020-10-26T01:45:27Z',
       channelId: 'UCbVqDf-obg_ylZZjNp1hK7Q',
-      title: 'Blender Skin Modifier - Character Base ( Time Lapse )',
-      description: 'Messing around with the skin modifier seems to have paid off, this will absolutely help speed things up in the future!',
+      title: 'PROG2200 M03 Weapons Interface',
+      description: 'Implementing simulated vehicle weapons with java interfaces.',
       thumbnails: [Object],
       channelTitle: 'Thomas vanBommel',
       liveBroadcastContent: 'none',
-      publishTime: '2017-01-21T05:14:23Z'
+      publishTime: '2020-10-26T01:45:27Z'
     }
   }
 ]
 
+```
+
+### Example HTML using EJS
+```html
+<% if(locals.youtube_videos) { %>
+  <div id="youtube_videos" class="">
+    <h2>YouTube</h2>
+
+    <% for(let video of youtube_videos.slice(0, 10)) { %>
+      <div class="video">
+        <img src="<%= video.snippet.thumbnails.high.url %>" alt="video thumbnail">
+
+        <b><%= video.snippet.title %></b>
+
+        <div class="">
+          <small><%= video.snippet.channelTitle %></small>
+        </div>
+
+        <div class="">
+          <small><%= video.statistics.viewCount %> views</small>
+          <small> * <%= new Date(video.snippet.publishedAt).toDateString() %></small>
+        </div>
+      </div>
+    <% } %>
+  </div>
+<% } %>
 ```

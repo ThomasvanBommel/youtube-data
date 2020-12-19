@@ -82,8 +82,6 @@ class YouTubeVideos {
         // set the old video object to the new one
         this.videos = videos;
 
-        console.log(videos);
-
         // log action to the terminal
         console.log(`${new Date().toISOString()} Updated YouTubeData`);
       });

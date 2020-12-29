@@ -9,7 +9,7 @@ class YouTubeVideos {
   /**
    * Create a new YouTubeVideos object, which grabs the last 50 videos from
    * the provided channel_id every hour and places their information inside the
-   * youtube_videos object.
+   * youtube object.
    * @param {Object} options - YouTubeVideos Options
    * @param {string} options.api_key - YouTube Data API v3 key
    * @param {string} options.channel_id - YouTube channel id
@@ -39,17 +39,19 @@ class YouTubeVideos {
     // setup options for updates, and videos for express
     this.options = options;
     this.videos = [];
+    this.profile = {};
+
+    this.options.interval = options.interval ? options.interval : 3600000;
 
     // update now, and every *interval*ms
     this.updateVideos();
-    setInterval(
-      this.updateVideos, options.interval ? options.interval : 3600000
-    );
+    setInterval( this.updateVideos, this.options.interval);
+
+    this.updateProfile();
+    setInterval(this.updateProfile, this.options.interval);
   }
 
-  /**
-   * Update videos stored in the videos array from the api
-   */
+  /** Update videos stored in the videos array from the api */
   updateVideos = () => {
     // api options
     let options = {
@@ -69,7 +71,9 @@ class YouTubeVideos {
       this.youtube.videos.list({
         part: "statistics",
         // combine all video ids into a single csv string
-        id: res.data.items.map(video => { return video.id.videoId }).join()
+        id: res.data.items.map(video => {
+          return video.id.videoId
+        }).join()
       }, (err, stats) => {
         // log errors
         if(err) return console.error(err);
@@ -83,25 +87,45 @@ class YouTubeVideos {
         this.videos = videos;
 
         // log action to the terminal
-        console.log(`${new Date().toISOString()} Updated YouTubeData`);
+        console.log(`${new Date().toISOString()} Updated YouTubeData Videos`);
       });
+    });
+  }
+
+  /** Update profile */
+  updateProfile = () => {
+    // get profile info
+    this.youtube.channels.list({
+      id: this.options.channel_id,
+      part: "snippet, statistics"
+    }, (err, res) => {
+      // log errors
+      if(err) return console.error(err);
+
+      // console.log(res.data.items[0]);
+      this.profile = res.data.items[0];
+
+      // log action to the terminal
+      console.log(`${new Date().toISOString()} Updated YouTubeData Profile`);
     });
   };
 
-  /** Express middleware to include the data in the req.youtube_videos list */
+  /** Express middleware to include the data in the req.youtube object */
   middleware = (req, res, next) => {
-    // add videos to the req object
-    req.youtube_videos = this.videos;
+    req.youtube = {
+      profile: this.profile,
+      videos: this.videos
+    };
 
     // call the next middleware
     next();
-  };
+  }
 }
 
 /**
  * Create a new YouTubeVideos object, which grabs the last 50 videos from
  * the provided channel_id every hour and places their information inside the
- * youtube_videos object.
+ * youtube object.
  * @param {Object} options - YouTubeVideos Options
  * @param {string} options.api_key - YouTube Data API v3 key
  * @param {string} options.channel_id - YouTube channel id
@@ -113,6 +137,6 @@ class YouTubeVideos {
  * @throws Missing 'channel_id' from YouTubeVideos options
  * @throws Missing 'api_key' from YouTubeVideos options
  */
-module.exports = (options) => {
+module.exports = options => {
   return new YouTubeVideos(options).middleware;
 };

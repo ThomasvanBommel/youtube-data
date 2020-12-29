@@ -40,84 +40,48 @@ app.use(YT({
 }));
 
 app.get("*", (req, res) => {
-  console.log(req.youtube_videos);
+  console.log(req.youtube);
 });
 ```
 
 ### Output Example
 
 ```js
-[
-  {
-    kind: 'youtube#searchResult',
-    etag: 'kgbqpKXwhOw1oUfkpgVI1gqjVmg',
-    id: { kind: 'youtube#video', videoId: 'xFOonneYxWQ' },
-    statistics: {
-      viewCount: '4',
-      likeCount: '0',
-      dislikeCount: '0',
-      favoriteCount: '0',
-      commentCount: '1'
-    },
+{
+  profile: {
+    kind: 'youtube#channel',
+    etag: 'qlbGdUE3miOchUAkhkUB95O6PMc',
+    id: 'UCbVqDf-obg_ylZZjNp1hK7Q',
     snippet: {
-      publishedAt: '2020-11-21T20:26:45Z',
-      channelId: 'UCbVqDf-obg_ylZZjNp1hK7Q',
-      title: 'Lobbier Project Update (week 1)',
-      description: 'https://github.com/BillMyres/Lobbier.',
+      title: 'Thomas vanBommel',
+      description: '',
+      publishedAt: '2011-05-02T19:05:40Z',
       thumbnails: [Object],
-      channelTitle: 'Thomas vanBommel',
-      liveBroadcastContent: 'none',
-      publishTime: '2020-11-21T20:26:45Z'
+      localized: [Object]
+    },
+    statistics: {
+      viewCount: '12388',
+      subscriberCount: '18',
+      hiddenSubscriberCount: false,
+      videoCount: '43'
     }
   },
-  {
-    kind: 'youtube#searchResult',
-    etag: '3e-lsY0z_lP42BjbGO_EtFITcJ0',
-    id: { kind: 'youtube#video', videoId: 'WceNj_73A3o' },
-    statistics: {
-      viewCount: '9',
-      likeCount: '0',
-      dislikeCount: '0',
-      favoriteCount: '0',
-      commentCount: '0'
+  videos: [
+    {
+      kind: 'youtube#searchResult',
+      etag: 'QYyzOoQg5SMNPbaV6NcO0ePxWg4',
+      id: [Object],
+      statistics: [Object],
+      snippet: [Object]
     },
-    snippet: {
-      publishedAt: '2020-10-26T01:45:27Z',
-      channelId: 'UCbVqDf-obg_ylZZjNp1hK7Q',
-      title: 'PROG2200 M03 Weapons Interface',
-      description: 'Implementing simulated vehicle weapons with java interfaces.',
-      thumbnails: [Object],
-      channelTitle: 'Thomas vanBommel',
-      liveBroadcastContent: 'none',
-      publishTime: '2020-10-26T01:45:27Z'
-    }
-  }
-]
-
-```
-
-### Example HTML using EJS
-```html
-<% if(locals.youtube_videos) { %>
-  <div id="youtube_videos" class="">
-    <h2>YouTube</h2>
-
-    <% for(let video of youtube_videos.slice(0, 10)) { %>
-      <div class="video">
-        <img src="<%= video.snippet.thumbnails.high.url %>" alt="video thumbnail">
-
-        <b><%= video.snippet.title %></b>
-
-        <div class="">
-          <small><%= video.snippet.channelTitle %></small>
-        </div>
-
-        <div class="">
-          <small><%= video.statistics.viewCount %> views</small>
-          <small> * <%= new Date(video.snippet.publishedAt).toDateString() %></small>
-        </div>
-      </div>
-    <% } %>
-  </div>
-<% } %>
+    {
+      kind: 'youtube#searchResult',
+      etag: 'wEk3DJmRMTbLbMEeZCfmOAkSses',
+      id: [Object],
+      statistics: [Object],
+      snippet: [Object]
+    },
+    /* ... */
+  ]
+}
 ```
